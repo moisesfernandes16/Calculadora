@@ -59,7 +59,8 @@
             if (resultado.value === "Infinity" || resultado.value === "-Infinity" || resultado.value === "Error") {
                 return;
             }
-
+            resultado.selectionStart = resultado.selectionEnd = resultado.value.length;
+}
             resultado.value += num;
         }
         function clean() {
