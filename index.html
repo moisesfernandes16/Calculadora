@@ -14,7 +14,7 @@
         <h1 class="h1">Moises Alexsandro</h1>
         <div class="Calculadora">
             <h1>Calculadora</h1>
-            <p id="Resultado"></p>
+            <input id="Resultado"></input>
             <table>
                 <tr>
                     <td><button class="botao" onclick="clean()"> C </button></td>
@@ -53,29 +53,68 @@
 
     <script>
 
+
         function insert(num) {
-            var numero = document.getElementById('Resultado').innerHTML;
-            document.getElementById('Resultado').innerHTML = numero + num;
+            var resultado = document.getElementById('Resultado');
+            if (resultado.value === "Infinity" || resultado.value === "-Infinity" || resultado.value === "Error") {
+                return;
+            }
+
+            resultado.value += num;
         }
         function clean() {
-            document.getElementById('Resultado').innerHTML = "";
+            document.getElementById('Resultado').value = "";
         }
         function back() {
-            var resultado = document.getElementById('Resultado').innerHTML;
-            document.getElementById('Resultado').innerHTML = resultado.substring(0, resultado.length - 1);
+            var resultado = document.getElementById('Resultado');
+            if (resultado.value === "Infinity" || resultado.value === "-Infinity" || resultado.value === "Erro") {
+                return;
+            }
+            resultado.value = resultado.value.slice(0, -1);
         }
-        function calcular(){
-            var resultado = document.getElementById('Resultado').innerHTML;
-                if(resultado)
-                {
-                    document.getElementById('Resultado').innerHTML = eval(resultado) 
-                } 
-                else
-                { 
-                    document.getElementById('Resultado').innerHTML = "nada..."
+
+        function calcular() {
+            var resultado = document.getElementById('Resultado')
+            if (resultado.value === "Infinity" || resultado.value === "-Infinity" || resultado.value === "Erro") {
+                return;
+            }
+            try {
+                if (resultado.value) {
+                    let valor = eval(resultado.value)
+
+                    if (valor === Infinity || valor === -Infinity) {
+                        resultado.value = "Infinity";
+                    }
+                    else if (isNaN(valor)) {
+                        resultado.value = 'Erro';
+                    }
+                    else {
+                        resultado.value = valor;
+                    }
                 }
+            }
+            catch (e) {
+                resultado.value = "Erro"
+            }
         }
+        document.addEventListener('keydown', function (event) {
+
+            const tecla = event.key;
+            if ((tecla >= '0' && tecla <= '9') || tecla === '.' || ['+', '-', '*', '/'].includes(tecla)) {
+                insert(tecla)
+            }
+            else if (tecla === 'Enter') {
+                calcular();
+            }
+            else if (tecla === 'Backspace') {
+                back();
+            }
+            else if (tecla.toLowerCase() === 'c') {
+                clean();
+            }
+        })
+
     </script>
 </body>
 
-</html>|
+</html>
